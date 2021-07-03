@@ -5,6 +5,8 @@ That's right, 3 keys. Here's a picture of the prototype, see below for how it wo
 
 ![The first prototype. Pictured is three keys, with wires to a breadboard with leds, with jumpers to a raspberry pi 4. Two of the keys are pressed and the corrosponding leds are lit](proto1.jpg)
 
+**This prototype is currently functional! It only outputs to STDOUT, and supports only letters and some select symbols, but it does indeed work**
+
 
 Here's how it works: The user goes through a series of state changes with key chords. A chord is one or more key pressed at the same time. Chords are denoted in binary, from left to right. The chord `000` is unrepresentable, but all others are.
 
