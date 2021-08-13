@@ -4,6 +4,9 @@ voltage regulator, SOT32-5, 5v -> 3v3, https://www.digikey.com/en/products/detai
 
 pinout:
 
+7  - PA06   -   KEY1
+8  - PA07   -   KEY2
+11 - PA08   -   KEY3
 
 13 - PA10   -   red led
 
