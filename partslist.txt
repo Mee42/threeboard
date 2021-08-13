@@ -1,0 +1,1 @@
+MCU - atsamd21e17a-au  https://www.digikey.com/en/products/detail/microchip-technology/ATSAMD21E17A-AU/4935885
