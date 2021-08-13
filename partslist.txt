@@ -1,2 +1,22 @@
 MCU - atsamd21e17a-au  https://www.digikey.com/en/products/detail/microchip-technology/ATSAMD21E17A-AU/4935885
 voltage regulator, SOT32-5, 5v -> 3v3, https://www.digikey.com/en/products/detail/onsemi/NCP164CSN330T1G/11592854
+
+
+pinout:
+
+
+13 - PA10   -   red led
+
+23 - PA24   -   D-
+24 - PA25   -   D+
+
+26 - RESET  -   RESET
+
+31 - PA30   -   SWCLK
+32 - PA32   -   SWDIO
+ 
+10 - GND    -   GND
+
+29 - VDDCORE 
+30 - VDIN
+9  - VDDANA
