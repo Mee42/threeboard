@@ -1,9 +1,6 @@
-[submodule "pcb/--force"]
-	path = pcb/--force
-	url = https://github.com/ai03-2725/MX_Alps_Hybrid.pretty
 [submodule "pcb/mx_switches"]
 	path = pcb/mx_switches
 	url = https://github.com/ai03-2725/MX_Alps_Hybrid.pretty
-[submodule "pcb/random_parts"]
-	path = pcb/random_parts
-	url = https://github.com/ai03-2725/MX_Alps_Hybrid.pretty
+[submodule "pcb/random_parts2"]
+	path = pcb/random_parts2
+	url = https://github.com/ai03-2725/random-keyboard-parts.pretty
