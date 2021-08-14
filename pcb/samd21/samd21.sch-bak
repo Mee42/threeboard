@@ -259,11 +259,11 @@ Wire Wire Line
 	3600 5600 3600 5700
 Wire Wire Line
 	3600 5900 3600 6050
-Text GLabel 4200 3600 0    50   Input ~ 0
+Text GLabel 4200 3400 0    50   Input ~ 0
 KEY3
 Text GLabel 4200 3500 0    50   Input ~ 0
 KEY2
-Text GLabel 4200 3400 0    50   Input ~ 0
+Text GLabel 4200 3600 0    50   Input ~ 0
 KEY1
 $Comp
 L MCU_Microchip_SAMD:ATSAMD21E17A-A U2
@@ -415,4 +415,15 @@ Text Label 1750 3000 0    50   ~ 0
 5V
 Wire Wire Line
 	3950 5600 4200 5600
+Wire Wire Line
+	1600 2900 1600 2800
+Wire Wire Line
+	1600 2800 1000 2800
+Wire Wire Line
+	1000 2800 1000 3500
+Wire Wire Line
+	1000 3500 1600 3500
+Wire Wire Line
+	1600 3500 1600 3400
+Connection ~ 1600 3400
 $EndSCHEMATC
