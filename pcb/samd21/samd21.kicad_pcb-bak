@@ -221,7 +221,7 @@
     (at 92.964 57.912)
     (path /6116C819)
     (attr smd)
-    (fp_text reference USB1 (at 2.032 0 90) (layer F.SilkS)
+    (fp_text reference USB1 (at 2.032 0 90) (layer F.SilkS) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_text value Molex-0548190589 (at -5.08 0 90) (layer Dwgs.User)
