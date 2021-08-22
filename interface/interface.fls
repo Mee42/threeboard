@@ -40,6 +40,17 @@ INPUT /usr/share/texmf-dist/tex/latex/tools/multicol.sty
 INPUT /usr/share/texmf-dist/tex/latex/tools/multicol.sty
 INPUT /usr/share/texmf-dist/tex/latex/tools/multicol.sty
 INPUT /usr/share/texmf-dist/tex/latex/tools/multicol.sty
+INPUT /usr/share/texmf-dist/tex/latex/tools/indentfirst.sty
+INPUT /usr/share/texmf-dist/tex/latex/tools/indentfirst.sty
+INPUT /usr/share/texmf-dist/tex/latex/tools/indentfirst.sty
+INPUT /usr/share/texmf-dist/tex/latex/tools/indentfirst.sty
+INPUT /usr/share/texmf-dist/tex/latex/tools/indentfirst.sty
+INPUT /usr/share/texmf-dist/tex/latex/tools/indentfirst.sty
+INPUT /usr/share/texmf-dist/tex/latex/tools/indentfirst.sty
+INPUT /usr/share/texmf-dist/tex/latex/tools/indentfirst.sty
+INPUT /usr/share/texmf-dist/tex/latex/tools/indentfirst.sty
+INPUT /usr/share/texmf-dist/tex/latex/tools/indentfirst.sty
+INPUT /usr/share/texmf-dist/tex/latex/tools/indentfirst.sty
 INPUT /usr/share/texmf-dist/tex/latex/lm/ot1lmr.fd
 INPUT /usr/share/texmf-dist/tex/latex/lm/ot1lmr.fd
 INPUT /usr/share/texmf-dist/tex/latex/lm/ot1lmr.fd
@@ -61,6 +72,9 @@ INPUT ./interface.aux
 INPUT interface.aux
 INPUT interface.aux
 OUTPUT interface.aux
+INPUT /usr/share/texmf-dist/fonts/tfm/public/lm/rm-lmr12.tfm
+INPUT /usr/share/texmf-dist/fonts/tfm/public/lm/rm-lmbx12.tfm
+INPUT /usr/share/texmf-dist/fonts/tfm/public/lm/rm-lmbx10.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/lm/rm-lmr12.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/lm/rm-lmbx12.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/lm/rm-lmr7.tfm

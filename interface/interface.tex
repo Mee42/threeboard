@@ -10,13 +10,38 @@
 \usepackage{lmodern}
 
 \usepackage{multicol}
+\usepackage{indentfirst}
 
 \pagestyle{empty}
 
 \begin{document}
+\section*{Threeboard Interface Manual}
+    
+The Threeboard has three keys, with no labels. 
+They are distinguished by their position; left, middle, and right. 
+Inputs are done through a series of chords (combinations of 1 or more keys pressed at the same time)
+and composed to form the same outputs as a fully-keyed keyboard.
+
+Whenever you see a triplet of 1s and 0s, that represents a chord.
+If the manual tells you to press "001 110 111", that means to press the left most key,
+then press the right and middle key at the same time, then press all three keys at the same time.
+
+As of the v0 implementation, keystrokes are registered after all keys have been unpressed.
+This means that holding down the right key, then holding down the left key, then unpressing the right key
+then unpressing the left key, will not send any signals until the left key is unpressed, and it will process as 
+101.
+This means that each keystroke must be completely separate. 
+Due to the lack of visual feedback, it's important that all keystrokes are read perfectly. 
+
+\subparagraph*{}
+Morse Code is used as inspiration for the basic alphabet and symbol table,
+and allows for some skill transferability. 
+There are two morse code input modes, one that uses 3 keys but has no timing requirements,
+and a clock morse code mode that requires operators to properly time their keys,
+just like a traditional morse code operator. This uses only 1 key. 
+This second mode is more difficult and is not yet implemented.
 
 \subsection*{Modes:}
-
 \begin{center}
 \begin{tabular} { c|l }
     0 & Morse Code \\
@@ -27,10 +52,11 @@
 \end{center}
 
 \subsection*{Global Chords:}
+These work regardless of what state or mode the keyboard is in.
 \begin{center}
 \begin{tabular} { c|l }
     011 & Next mode \\
-    111 & Reset to mode 0 
+    111 & Reset to a clean-slate mode 0
 \end{tabular}
 \end{center}
 
@@ -117,15 +143,15 @@
 
 \subsection*{Modifier Mode (Mode 1):}
 
-After finishing (110) the keyboard returns to mode 0,
-and the next key sent will have the specified modifier.
-\textless C-T\textgreater is 011 100 110 (ctrl) 011 010 110 (shift) 010 001 (t)
+After inputting a modifier (001) the keyboard returns to mode 0,
+and the next key sent will have the specified modifier. For example, 
+\textless C-T\textgreater is 011 100 001 (ctrl) 011 010 001 (shift) 010 001 (t)
 \begin{center}
 \begin{tabular} { l|l }
-    100 \phantom{000}    110 & ctrl   \\
-    100 100 110 & win    \\
-    010 \phantom{000}    110 & shift  \\
-    010 010 110 & alt
+    100 \phantom{000}    001 & ctrl   \\
+    100 100 001 & win    \\
+    010 \phantom{000}    001 & shift  \\
+    010 010 001 & alt
 \end{tabular}
 \end{center}
 
@@ -161,7 +187,6 @@ and 110 110 an extension of that.
 \begin{center}
 \begin{tabular} { l|l }
     100 & Halt
-    010 & 
 \end{tabular}
 \end{center}
 
