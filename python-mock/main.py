@@ -3,6 +3,63 @@ import RPi.GPIO as GPIO
 import sys
 
 
+# specification
+
+# mode
+#   0 - morse
+#   1 - modifiers
+#   2 - arrow keys
+#   3 - 
+#   4 - 
+#   5 - system
+
+# in every mode:
+#  111: reset to mode 0, state reset
+#  011: go to next mode
+ 
+# mode 0, morse
+#  morse code table is mostly standard
+
+#  100 | dit (dot)
+#  010 | dah (dash)
+#  001 | finish letter, if a letter is in progress
+#  001 | space
+
+
+# mode 1, modifiers
+#  after finishing (110) this returns to mode 0, but the key sent has the specified modifier
+#  can be combined. <C-T> would be 100 110(ctrl) 010 110(shift) 010 001(t)
+
+#   100     110 | ctrl 
+#   100 100 110 | win
+#   010     110 | shift
+#   010 010 110 | alt
+
+
+# mode 2, arrow keys
+#   a good way to navigate around with the arrow keys. 110 can be used to make the next keystroke "bigger"
+
+#  100 | left arrow
+#  001 | right arrow
+#  010 | up arrow
+#  101 | down arrow
+#  110 100 | ctrl left arrow   | left by word
+#  110 001 | ctrl right arrow  | right by word
+#  110 010 | ctrl up arrow     | up by paragraph
+#  110 101 | ctrl down arrow   | down by paragraph
+#  110 110 100 | home          | go to start of line
+#  110 110 001 | end           | go to end of line
+#  110 110 010 | ctrl home     | go to start of document
+#  110 110 101 | ctrl end      | go to the end of document 
+
+
+# mode 5, system
+#   this is where system-specific controls are
+
+# 100 | halt 
+
+
+
 logFile = open('log.log', 'a')
 def log(s):
     global logFile
@@ -15,34 +72,49 @@ def error(str):
 log('\n\n\n\n\n\n\n    ----    program start    ----\n')
 
 
+# state
+mode = 0
+# morse code state
 
-
-# custom logic
 inWord = False
-
 buf = []
-# 1 - dit
-# 0 - dah
 
-# morse code mode?
-# 100 - dit
-# 010 - dah
-# 001 - end letter
-# 001 001 - end word
+
 def processKeystroke(state):
+    global mode
+    log("mode: " + str(mode) + " state: " + str(state) + "\n")
+    if state == [1, 1, 1]:
+        mode = 0
+        mode0_morse_init()
+    if state == [0, 1, 1]:
+        # next mode
+        mode = mode + 1
+        if mode == 0:
+            mode0_morse_init()
+    else:
+        if mode == 0:
+            mode0_morse(state)
+        elif mode == 1:
+            mode1_modifiers(state)
+        elif mode == 2:
+            mode2_arrows(state)
+        elif mode == 5:
+            mode5_system(state)
+        else:
+            error("Can't find mode " + str(mode))
+
+def mode0_morse_init():
+    # runs whenever we enter this mode
     global inWord
     global buf
-    log("state: " + str(state) + "\n")
-    if state == [1, 1, 0]:
-        buf = []
-        inWord = False
-    elif state == [0, 1, 1]:
-        # backspace?
-        sys.stdout.write(chr(8))
-        sys.stdout.write(" ")
-        sys.stdout.write(chr(8))
-        sys.stdout.flush()
-    elif state == [1, 0, 0] or state == [0, 1, 0]:
+    inWord = False
+    buf = []
+
+
+def mode0_morse(state):
+    global inWord
+    global buf
+    if state == [1, 0, 0] or state == [0, 1, 0]:
         isDit = 1 if state == [1, 0, 0] else 0
         buf.append(isDit)
         inWord = True
@@ -58,10 +130,12 @@ def processKeystroke(state):
         inWord = False
         sys.stdout.write(char)
         sys.stdout.flush()
-    else:
-        log("unhandled state: " + str(state) + "\n")
-    setStatusLeds(inWord)
-
+def mode1_modifiers(state):
+    pass
+def mode2_arrows(state):
+    pass
+def mode5_system(state):
+    pass
 
 def morseLookup(arr):
     # chonk lookup
@@ -137,9 +211,6 @@ morseObj = {
         
     }
 
-def onTick():
-    pass
-
 
 
 
@@ -167,7 +238,6 @@ lastState = [0, 0, 0]
 
 try:
     while True:
-        onTick()
         time.sleep(0.001)
         state = [GPIO.input(x) for x in [one, two, three]]
         if state == lastState:
