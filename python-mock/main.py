@@ -19,11 +19,13 @@ log('\n\n\n\n\n\n\n    ----    program start    ----\n')
 
 # state
 mode = 0
-# morse code state
 
+# morse code state
 inWord = False
 buf = []
 
+# modifier state
+mods = []
 
 def processKeystroke(state):
     global mode
@@ -55,7 +57,6 @@ def mode0_morse_init():
     inWord = False
     buf = []
 
-
 def mode0_morse(state):
     global inWord
     global buf
@@ -73,12 +74,58 @@ def mode0_morse(state):
         if char == None:
             return # can't write obv
         inWord = False
+        global mods
+        if "shift" in mods:
+            char = char.upper()
+        if "ctrl" in mods or "alt" in mods or "win" in mods:
+            log("can't handle mods " + str(mods) + " right now")
+        mods = []
         sys.stdout.write(char)
         sys.stdout.flush()
+    elif state == [1, 1, 0]:
+        buf = []
+        inWord = False
+
+def mode1_modifiers_init():
+    global buf
+    global inWord
+    buf = []
+    inWord = False
+
 def mode1_modifiers(state):
-    pass
+    global buf
+    global mods
+    global mode
+    global inWord
+    if state == [1, 0, 0] or state == [0, 1, 0]:
+        buf.append(1 if state == [1, 0, 0] else 0) # 1 -> ctrl, 1 1 -> win, 0 -> shift, 0 0 -> alt
+        inWord = True
+    elif state == [0, 0, 1]:
+        if buf == []:
+            log("got empty buf on 001 in mode1") # TODO what do we do in case 111 011 001?
+        else:
+            mod = None 
+            if buf == [1]:
+                mod = 'ctrl'
+            elif buf == [1, 1]:
+                mod = 'win'
+            elif buf == [0]:
+                mod = 'shift'
+            elif buf == [0, 0]:
+                mod = 'alt'
+            else:
+                error("unknown modifier " + str(buf))
+            log("adding modifier " + mod + "\n")
+            mods.append(mod)
+            mode = 0
+            inWord = False
+            buf = []
+
+
+
 def mode2_arrows(state):
     pass
+
 def mode5_system(state):
     pass
 
