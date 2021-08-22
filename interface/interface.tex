@@ -1,0 +1,171 @@
+\documentclass{book}
+
+
+\def\dit{\rule[2.5pt]{2pt}{2pt}\hspace{2pt}}
+\def\dah{\rule[2.5pt]{6pt}{2pt}\hspace{2pt}}
+\def\letterspace{\hspace{4pt}} % in addition to the 2pt added to the end of every dit/dah
+\def\wordspace{\hspace{12pt}}
+
+{\renewcommand{\arraystretch}{1.1}
+\usepackage{lmodern}
+
+\usepackage{multicol}
+
+\pagestyle{empty}
+
+\begin{document}
+
+\subsection*{Modes:}
+
+\begin{center}
+\begin{tabular} { c|l }
+    0 & Morse Code \\
+    1 & Modifiers \\
+    2 & Arrow Keys \\
+    5 & System
+\end{tabular}
+\end{center}
+
+\subsection*{Global Chords:}
+\begin{center}
+\begin{tabular} { c|l }
+    011 & Next mode \\
+    111 & Reset to mode 0 
+\end{tabular}
+\end{center}
+
+\subsection*{Morse Code:}
+\begin{center}
+\begin{tabular} { c|l }
+    100 & $\dit$ \\
+    010 & $\dah$
+\end{tabular}
+\end{center}
+
+\subsection*{Morse Code Mode (Mode 0):}
+\begin{multicols}{3}
+
+\begin{tabular} { c|l }
+     A & \dit\dah \\
+     B & \dah\dit\dit\dit \\
+     C & \dah\dit\dah\dit \\
+     D & \dah\dit\dit \\
+     E & \dit \\
+     F & \dit\dit\dah\dit \\
+     G & \dah\dah\dit \\
+     H & \dit\dit\dit\dit \\
+     I & \dit\dit \\
+     J & \dit\dah\dah\dah \\
+     K & \dah\dit\dah \\
+     L & \dit\dah\dit\dit \\
+     M & \dah\dah \\
+     N & \dah\dit \\
+     O & \dah\dah\dah \\
+     P & \dit\dah\dah\dit \\
+     Q & \dah\dah\dit\dah \\
+     R & \dit\dah\dit \\
+     S & \dit\dit\dit \\
+     T & \dah \\
+     U & \dit\dit\dah \\
+     V & \dit\dit\dit\dah \\
+     W & \dit\dah\dah \\
+     X & \dah\dit\dit\dah \\
+     Y & \dah\dit\dah\dah \\
+     Z & \dah\dah\dit\dit \\
+\end{tabular} 
+    
+\columnbreak
+\begin{tabular}{ c|l }
+     1 & \dit\dah\dah\dah\dah \\
+     2 & \dit\dit\dah\dah\dah \\
+     3 & \dit\dit\dit\dah\dah \\
+     4 & \dit\dit\dit\dit\dah \\
+     5 & \dit\dit\dit\dit\dit \\
+     6 & \dah\dit\dit\dit\dit \\
+     7 & \dah\dah\dit\dit\dit \\
+     8 & \dah\dah\dah\dit\dit \\
+     9 & \dah\dah\dah\dah\dit \\
+    10 & \dah\dah\dah\dah\dah \\
+     . & \dit\dah\dit\dah\dit\dah \\
+     , & \dah\dah\dit\dit\dah\dah \\
+     : & \dah\dah\dah\dit\dit\dit \\
+     : & \dit\dit\dah\dah\dit\dit \\
+     ' & \dit\dah\dah\dah\dah\dit \\
+     - & \dah\dit\dit\dit\dit\dah \\
+     / & \dah\dit\dit\dah\dit \\
+     ( & \dah\dit\dah\dah\dit \\
+     ) & \dah\dit\dah\dah\dit\dah \\
+     " & \dit\dah\dit\dit\dah\dit \\
+     = & \dah\dit\dit\dit\dah \\
+     + & \dah\dit\dah\dit\dah \\
+     $\ast$ & \dah\dit\dit\dah \\
+     @ & \dit\dah\dah\dit\dah\dit \\
+\end{tabular}
+
+\columnbreak
+\begin{tabular} { l|l }
+    001 & End Letter \\
+    001 001 & Space \\
+    110 & Reset State
+\end{tabular}
+
+
+\end{multicols}
+
+
+
+
+\subsection*{Modifier Mode (Mode 1):}
+
+After finishing (110) the keyboard returns to mode 0,
+and the next key sent will have the specified modifier.
+\textless C-T\textgreater is 011 100 110 (ctrl) 011 010 110 (shift) 010 001 (t)
+\begin{center}
+\begin{tabular} { l|l }
+    100 \phantom{000}    110 & ctrl   \\
+    100 100 110 & win    \\
+    010 \phantom{000}    110 & shift  \\
+    010 010 110 & alt
+\end{tabular}
+\end{center}
+
+
+\subsection*{Arrow Keys Mode (Mode 2):}
+You can memorize this easily by imagining 110 as an exemplifier for the key that follows, 
+and 110 110 an extension of that.
+\begin{center}
+\begin{tabular} { l|c|l }
+    Code & Keystroke & Move By \\
+    \hline
+    100 & Left Arrow & Character \\
+    001 & Right Arrow & Character \\
+    010 & Up Arrow & Line \\
+    101 & Down Arrow & Line \\
+    
+    110 100 & Ctrl Left Arrow & Word \\
+    110 001 & Ctrl Right Arrow & Word \\
+    110 010 & Ctrl Up Arrow & Paragraph \\
+    110 101 & Ctrl Down Arrow & Paragraph \\
+
+    110 110 100 & Home & Entire Line \\
+    110 110 001 & End & Entire Line \\
+    110 110 010 & Ctrl Home & Entire Document \\
+    110 110 101 & Ctrl End & Entire Document \\
+
+    
+\end{tabular}
+\end{center}    
+
+\subsection*{System Mode (Mode 5):}
+
+\begin{center}
+\begin{tabular} { l|l }
+    100 & Halt
+    010 & 
+\end{tabular}
+\end{center}
+
+
+
+
+\end{document}

@@ -3,61 +3,6 @@ import RPi.GPIO as GPIO
 import sys
 
 
-# specification
-
-# mode
-#   0 - morse
-#   1 - modifiers
-#   2 - arrow keys
-#   3 - 
-#   4 - 
-#   5 - system
-
-# in every mode:
-#  111: reset to mode 0, state reset
-#  011: go to next mode
- 
-# mode 0, morse
-#  morse code table is mostly standard
-
-#  100 | dit (dot)
-#  010 | dah (dash)
-#  001 | finish letter, if a letter is in progress
-#  001 | space
-
-
-# mode 1, modifiers
-#  after finishing (110) this returns to mode 0, but the key sent has the specified modifier
-#  can be combined. <C-T> would be 100 110(ctrl) 010 110(shift) 010 001(t)
-
-#   100     110 | ctrl 
-#   100 100 110 | win
-#   010     110 | shift
-#   010 010 110 | alt
-
-
-# mode 2, arrow keys
-#   a good way to navigate around with the arrow keys. 110 can be used to make the next keystroke "bigger"
-
-#  100 | left arrow
-#  001 | right arrow
-#  010 | up arrow
-#  101 | down arrow
-#  110 100 | ctrl left arrow   | left by word
-#  110 001 | ctrl right arrow  | right by word
-#  110 010 | ctrl up arrow     | up by paragraph
-#  110 101 | ctrl down arrow   | down by paragraph
-#  110 110 100 | home          | go to start of line
-#  110 110 001 | end           | go to end of line
-#  110 110 010 | ctrl home     | go to start of document
-#  110 110 101 | ctrl end      | go to the end of document 
-
-
-# mode 5, system
-#   this is where system-specific controls are
-
-# 100 | halt 
-
 
 
 logFile = open('log.log', 'a')
