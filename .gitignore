@@ -1,2 +1,6 @@
 *.log
 *.swp
+build/*.gbr
+interface/*
+!interface/*.tex
+!interface/*.pdf
