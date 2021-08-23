@@ -4,3 +4,4 @@ build/*.gbr
 docs/*
 !docs/*.tex
 !docs/*.pdf
+!docs/*.html
