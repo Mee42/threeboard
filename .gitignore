@@ -5,3 +5,9 @@ docs/*
 !docs/*.tex
 !docs/*.pdf
 !docs/*.html
+arm-asm/*
+!arm-asm/Makefile
+!arm-asm/bootload.bin
+!arm-asm/linkerscript.txt
+!arm-asm/test.s
+!arm-asm/zeros.bin
