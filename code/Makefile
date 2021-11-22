@@ -1,18 +1,17 @@
 
-.PHONY: enterance clean
+.PHONY: enterance asm clean
 
 enterance: out.bin
-	@# arm-none-eabi-objdump -S main
 
-
-asm.o: asm.s
-	arm-none-eabi-as asm.s -mcpu=cortex-m0 -o asm.o
+asm: out.bin main
+	arm-none-eabi-objdump -S main
+	arm-none-eabi-objdump -s main
 
 main.o: main.c
-	arm-none-eabi-gcc main.c -mcpu=cortex-m0 -c -o main.o
+	arm-none-eabi-gcc main.c -mcpu=cortex-m0 -c -o main.o -O3
 
-main: asm.o main.o linkerscript.txt
-	arm-none-eabi-ld -o main asm.o main.o -T linkerscript.txt
+main: main.o linkerscript.txt
+	arm-none-eabi-ld -o main main.o -T linkerscript.txt
 
 out.text.bin: main
 	arm-none-eabi-objcopy -O binary -S main --only-section=.text out.text.bin

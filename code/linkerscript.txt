@@ -1,7 +1,13 @@
 SECTIONS
 {
   . = 0x20;
-  .text : { *(.text) }
+  .text : { 
+    *(.text.main);
+    *(.text);
+  }
+  .rodata : {
+    *(.rodata);
+  }
   . = 0x1000;
   .data : { *(.data) }
 }
