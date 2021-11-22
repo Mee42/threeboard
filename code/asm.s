@@ -24,8 +24,8 @@ _start:
 // and              ends at 0x20003FFF
 // so I supposed we will set the stack pointer
 // to 0x20003FFF and see how it goes. Maybe we want 0x200003FF0 to pad for qwords, or 0x200004000 cause it subrtacts then moves down
-ldr r0, =0x20003FF
-mov sp, r0
+//ldr r0, =0x20003FF
+//mov sp, r0
 
 mov r0, #0x77
 mov r1, #0x77

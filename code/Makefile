@@ -1,8 +1,8 @@
 
 .PHONY: enterance clean
 
-enterance: clean out.bin
-	arm-none-eabi-objdump -S main
+enterance: out.bin
+	@# arm-none-eabi-objdump -S main
 
 
 asm.o: asm.s
