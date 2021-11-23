@@ -1,22 +1,25 @@
+/* signifigant credit to https://www.bravegnu.org/gnu-eprog/data-in-ram.html */
+
 SECTIONS
 {
+/* We start the binary at 0x20 */
   . = 0x20;
   .text : { 
-    *(.text.main);
+    *(.text.main); /* this is so the main function is always put at 0x20 */
     *(.text);
     . = ALIGN(8);
-  } = 0x0000
-  .rodata : {
+  } = 0x00  /* fill the rest of the alignment bytes with 0000s */
+  .rodata : { /* read-only data */
     *(.rodata);
     . = ALIGN(8);
   } = 0x00
-  l_flash_data = .;
+  l_flash_data = .; /* the ro data goes here on the flash */
 
   . = 0x20000000;
-  l_mem_data = .;
-  .data : AT(l_flash_data) { 
+  l_mem_data = .; /* here's where the rw data goes in real memory */
+  .data : AT(l_flash_data) { /* but we actually put it in flash */
     *(.data) 
     . = ALIGN(8);
   } = 0x00
-  l_mem_data_end = .;
+  l_mem_data_end = .; /* so we know the size of the rw section */
 }
