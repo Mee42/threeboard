@@ -4,10 +4,19 @@ SECTIONS
   .text : { 
     *(.text.main);
     *(.text);
-  }
+    . = ALIGN(8);
+  } = 0x0000
   .rodata : {
     *(.rodata);
-  }
-  . = 0x1000;
-  .data : { *(.data) }
+    . = ALIGN(8);
+  } = 0x00
+  l_flash_data = .;
+
+  . = 0x20000000;
+  l_mem_data = .;
+  .data : AT(l_flash_data) { 
+    *(.data) 
+    . = ALIGN(8);
+  } = 0x00
+  l_mem_data_end = .;
 }

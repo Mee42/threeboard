@@ -6,9 +6,12 @@
 // so it goes first
 __attribute__((section(".text.main"))) void main();
 void halt();
+void setup_global_variables();
 void delay();
 
-extern char foo;
+extern char l_flash_data; // where the .data segment is in flash
+extern char l_mem_data; // where the .data segment is in memory
+extern char l_mem_data_end;  // the end of the .data segment in memory
 
 // sizeof(long)      = 4
 // sizeof(int)       = 4
@@ -33,9 +36,7 @@ int const y = 0xBABEDEAD; // goes into .rwdata
 
 // do not return from main
 void main() {
-    *start_of_mem = x;
-    *start_of_mem = y;
-
+    setup_global_variables();
     int bit_27_high = 1 << 27;
     post_tables[0x08 / sizeof(int*)] = bit_27_high; // set the 27th bit of DIRSET
     post_tables[0x18 / sizeof(int*)] = bit_27_high; // set the 27th bit of OUTSET
@@ -44,6 +45,17 @@ void main() {
         delay();
     }
     halt();
+}
+void setup_global_variables() {
+    int* start = (int*)(&l_flash_data);
+    int* dest  = (int*)(&l_mem_data);
+    int* end_dest = (int*)(&l_mem_data_end);
+    do { // might be off-by-one error, should we do <=?
+        asm("mov r7, r7");
+        *dest = *start;
+        dest++;
+        start++;
+    }while(dest != end_dest);
 }
 
 __attribute__((noinline)) void delay() {
