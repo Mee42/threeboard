@@ -1,5 +1,7 @@
+
 #define true 1
 #define false 0
+#define bool _Bool
 
 // so it goes first, for linking
 __attribute__((section(".text.main"))) void main();
@@ -7,6 +9,9 @@ void halt();
 void setup_global_variables();
 void delay(int);
 void blinkN(int, int);
+void initGPIO();
+void setLED(bool);
+bool readPin();
 
 extern char l_flash_data; // where the .data segment is in flash
 extern char l_mem_data; // where the .data segment is in memory
@@ -37,25 +42,64 @@ void main() {
     delay(30000); // seems like the sram needs time to boot...
     // NEEDED, all global variables are garbage until this is called
     setup_global_variables();
-
-    asm("debug_label:");
-    ((int*)start_of_mem)[0] = x;
-    asm("debug_label_2:");
+    initGPIO();
 
     blinkN(5, 30000);
-    blinkN(10000, 3000);
+    while(true) {
+        setLED(readPin());
+    }
+//    while(true) {
+//        if(readPin()) {
+//            blinkN(1, 100000);
+//        } else {
+//            blinkN(1, 10000);
+//        }
+//    }
+
     // do not remove
     halt();
 }
 
+// led  PA27
+// key3 PA05
+volatile char* const pincfg5 = ((char*)post_tables) + 0x40/*starting offset*/ + 0x5/*pin num*/;
+void initGPIO() {
+    post_tables[0x08 / sizeof(int*)] = 1 << 27; // DIRSET[27] = 1
+
+    // the keys are configured with internal pull-up resistors, with the key connecting the pin to ground
+    post_tables[0x04/sizeof(int*)] = 1 << 5; // DIRCLR[5] = 0
+    post_tables[0x18/sizeof(int*)] = 1 << 5; // OUTSET[5] = 1
+    *pincfg5 = 1 << 2; // pincfg5 bit 2 (PULLEN) = 1
+    *pincfg5 |= 1 << 1; // pincfg5 bit 1 (INEN) = 1
+
+    // DIR: 0     input pin
+    // PULLEN: 1  pull pin
+    // OUT: 1     pull up
+    // INEN: 1    buffered
+    
+    // read state out of IN[bit y]
+}
+bool readPin() {
+    return (post_tables[0x20/sizeof(int*)] & 0x20) != 0; // IN[5];
+}
+
+void setLED(bool state) {
+    if(state) {
+        post_tables[0x14 / sizeof(int*)] = 1 << 27;// OUTCLR[27]
+    } else {
+        post_tables[0x18 / sizeof(int*)] = 1 << 27; // OUTSET[27]
+    }
+}
+
+
+
 void blinkN(int n, int delayTime) {
-    int const bit_27_high = 1 << 27;
-    post_tables[0x08 / sizeof(int*)] = bit_27_high; // set the 27th bit of DIRSET
-    post_tables[0x18 / sizeof(int*)] = bit_27_high; // set the 27th bit of OUTSET
     int i = 0;
-    while(i < n*2) {
+    while(i < n) {
         i++;
-        post_tables[0x1C / sizeof(int*)] = bit_27_high; // set the 27th bit of OUTTGL, toggle pin
+        setLED(true);
+        delay(delayTime);
+        setLED(false);
         delay(delayTime);
     }
 }
