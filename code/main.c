@@ -5,7 +5,8 @@
 __attribute__((section(".text.main"))) void main();
 void halt();
 void setup_global_variables();
-void delay();
+void delay(int);
+void blinkN(int, int);
 
 extern char l_flash_data; // where the .data segment is in flash
 extern char l_mem_data; // where the .data segment is in memory
@@ -33,6 +34,7 @@ void main() {
     // this is needed to reset the stackpointer when debugging (otherwise it trends downwards)
     asm("ldr r0, =0x20003FFF");
     asm("mov sp, r0");
+    delay(30000); // seems like the sram needs time to boot...
     // NEEDED, all global variables are garbage until this is called
     setup_global_variables();
 
@@ -40,17 +42,25 @@ void main() {
     ((int*)start_of_mem)[0] = x;
     asm("debug_label_2:");
 
-    int bit_27_high = 1 << 27;
-    post_tables[0x08 / sizeof(int*)] = bit_27_high; // set the 27th bit of DIRSET
-    post_tables[0x18 / sizeof(int*)] = bit_27_high; // set the 27th bit of OUTSET
-    while(true) {
-        post_tables[0x1C / sizeof(int*)] = bit_27_high; // set the 27th bit of OUTTGL, toggle pin
-        delay();
-    }
-
+    blinkN(5, 30000);
+    blinkN(10000, 3000);
     // do not remove
     halt();
 }
+
+void blinkN(int n, int delayTime) {
+    int const bit_27_high = 1 << 27;
+    post_tables[0x08 / sizeof(int*)] = bit_27_high; // set the 27th bit of DIRSET
+    post_tables[0x18 / sizeof(int*)] = bit_27_high; // set the 27th bit of OUTSET
+    int i = 0;
+    while(i < n*2) {
+        i++;
+        post_tables[0x1C / sizeof(int*)] = bit_27_high; // set the 27th bit of OUTTGL, toggle pin
+        delay(delayTime);
+    }
+}
+
+
 void setup_global_variables() {
     int* start = (int*)(&l_flash_data);
     int* dest  = (int*)(&l_mem_data);
@@ -63,10 +73,10 @@ void setup_global_variables() {
     }while(dest != end_dest);
 }
 
-__attribute__((noinline)) void delay() {
+__attribute__((noinline)) void delay(int delayTime) {
     // delays ~0.5 seconds
-    int i = 0;
-    while(i < 30000) {
+    register int i = 0;
+    while(i < delayTime) {
         i++;
         asm("");
     }
