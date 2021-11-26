@@ -1,6 +1,6 @@
 *.log
 *.swp
-build/*.gbr
+build/
 code/build/
 docs/*
 !docs/*.tex
