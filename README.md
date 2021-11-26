@@ -2,15 +2,16 @@
 
 ![Image](https://github.com/Mee42/threeboard/blob/master/pictures/render-v1.png)
 
-All tagged commits contain pcb designs that were ordered.
+The v1 threeboard has been fully assembled and firmware is currently in developement. 
+Firmware is in the `code/` directory and is written in C.
 
-#### For building:
-- make sure you have both the
+### KiCad instructions
+PCB files are in the `pcb/` directory. Threeboard is designed on an ATSAMD21E17A arm microcontroller. A v2 board is in development
+
+Both 
 [random parts](https://github.com/ai03-2725/random-keyboard-parts.pretty)
-and the
+and
 [mx switch footprint](https://github.com/ai03-2725/MX_Alps_Hybrid.pretty)
-libraries imported into kicad.
+are dependencies for the kicad files.
 
-
-The python-mock runs on a raspberry pi, with BCM pins 16, 20, and 21 used as input and pin 12 as the status led. python2 is used due to gpio libaries.
 
